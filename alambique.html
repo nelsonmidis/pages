@@ -36,11 +36,11 @@
     <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍺</text></svg>">
     
-    <!-- Preload das imagens principais para performance -->
-    <link rel="preload" href="I1hOZK-2w1RlMs5taD7lk" as="image">
-    <link rel="preload" href="dAfAmSKwYP8rmsjUeu1Xw" as="image">
-    <link rel="preload" href="zv_wrRhiqVWSTGXP1WGEw" as="image">
-    <link rel="preload" href="9-XBNXhj9jCRhRnKiVwNO" as="image">
+    <!-- Preload das imagens do GitHub -->
+    <link rel="preload" href="https://raw.githubusercontent.com/nelsonmidis/pages/master/lula%20normal.jpg" as="image">
+    <link rel="preload" href="https://raw.githubusercontent.com/nelsonmidis/pages/master/putin%20melhor.jpg" as="image">
+    <link rel="preload" href="https://raw.githubusercontent.com/nelsonmidis/pages/master/cachaca.webp" as="image">
+    <link rel="preload" href="https://raw.githubusercontent.com/nelsonmidis/pages/master/caminhaoChines.png" as="image">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -161,7 +161,7 @@
                     const item = window.localStorage.getItem(key);
                     return item ? JSON.parse(item) : initialValue;
                 } catch (error) {
-                    console.error("Erro localStorage:", error);
+                    console.error('Erro localStorage:', error);
                     return initialValue;
                 }
             });
@@ -208,12 +208,12 @@
             const TRUCK_WIDTH = 70;
             const TRUCK_HEIGHT = 50;
 
-            // URLs das imagens corretas do projeto
+            // URLs das imagens diretas do GitHub (RAW)
             const IMAGES = {
-                lula: 'I1hOZK-2w1RlMs5taD7lk',
-                putin: 'dAfAmSKwYP8rmsjUeu1Xw',
-                cachaca: 'zv_wrRhiqVWSTGXP1WGEw',
-                caminhao: '9-XBNXhj9jCRhRnKiVwNO'
+                lula: 'https://raw.githubusercontent.com/nelsonmidis/pages/master/lula%20normal.jpg',
+                putin: 'https://raw.githubusercontent.com/nelsonmidis/pages/master/putin%20melhor.jpg',
+                cachaca: 'https://raw.githubusercontent.com/nelsonmidis/pages/master/cachaca.webp',
+                caminhao: 'https://raw.githubusercontent.com/nelsonmidis/pages/master/caminhaoChines.png'
             };
 
             // Função para gerar posição aleatória para garrafas
@@ -624,10 +624,10 @@
         // Preload das imagens e inicialização
         const preloadImages = () => {
             const images = [
-                'I1hOZK-2w1RlMs5taD7lk',
-                'dAfAmSKwYP8rmsjUeu1Xw',
-                'zv_wrRhiqVWSTGXP1WGEw',
-                '9-XBNXhj9jCRhRnKiVwNO'
+                'https://raw.githubusercontent.com/nelsonmidis/pages/master/lula%20normal.jpg',
+                'https://raw.githubusercontent.com/nelsonmidis/pages/master/putin%20melhor.jpg',
+                'https://raw.githubusercontent.com/nelsonmidis/pages/master/cachaca.webp',
+                'https://raw.githubusercontent.com/nelsonmidis/pages/master/caminhaoChines.png'
             ];
 
             let loadedImages = 0;
@@ -638,17 +638,26 @@
                 img.onload = () => {
                     loadedImages++;
                     if (loadedImages === totalImages) {
-                        setTimeout(hideLoading, 1000); // Delay para mostrar o loading
+                        setTimeout(hideLoading, 500);
                     }
                 };
                 img.onerror = () => {
+                    console.log('Erro ao carregar imagem:', src);
                     loadedImages++;
                     if (loadedImages === totalImages) {
-                        setTimeout(hideLoading, 1000);
+                        setTimeout(hideLoading, 500);
                     }
                 };
                 img.src = src;
             });
+
+            // Timeout de segurança caso as imagens demorem muito
+            setTimeout(() => {
+                if (loadedImages < totalImages) {
+                    console.log('Timeout: carregando jogo mesmo sem todas as imagens');
+                    hideLoading();
+                }
+            }, 5000);
         };
 
         // Renderizar o jogo após carregamento
