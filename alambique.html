@@ -1,37 +1,34 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>🍺 Alambique Nuclear ☢️</title>
+  <!-- React CDN -->
   <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body, html { width: 100%; height: 100%; font-family: sans-serif; }
+    body, html { width: 100%; height: 100%; font-family: sans-serif; background: #111; color: white; }
     #root { width: 100%; height: 100%; }
-    .safe-area-inset { padding-bottom: env(safe-area-inset-bottom); }
+    button { cursor: pointer; }
   </style>
 </head>
 <body>
   <div id="root"></div>
-
   <script type="text/babel">
-
     const { useState, useEffect, useCallback, useRef } = React;
 
-    const useStoredState = (key, initialValue) => {
-      const [value, setValue] = useState(() => {
+    const useStoredState = (key, initial) => {
+      const [val, setVal] = useState(() => {
         const stored = localStorage.getItem(key);
-        return stored ? JSON.parse(stored) : initialValue;
+        return stored ? JSON.parse(stored) : initial;
       });
-
       useEffect(() => {
-        localStorage.setItem(key, JSON.stringify(value));
-      }, [key, value]);
-
-      return [value, setValue];
+        localStorage.setItem(key, JSON.stringify(val));
+      }, [key, val]);
+      return [val, setVal];
     };
 
     const AlambicGame = () => {
@@ -42,251 +39,200 @@
       const [bottles, setBottles] = useState([]);
       const [trucks, setTrucks] = useState([]);
       const [reactorHeat, setReactorHeat] = useState(20);
-      const [gameSpeed, setGameSpeed] = useState(1000);
       const [explosion, setExplosion] = useState(false);
+      const gameArea = useRef(null);
+      const loopRef = useRef(null);
+      const bottleId = useRef(0);
+      const truckId = useRef(0);
 
-      const gameAreaRef = useRef(null);
-      const gameLoopRef = useRef(null);
-      const bottleIdRef = useRef(0);
-      const truckIdRef = useRef(0);
+      const GW = 350, GH = 500, BW = 25, BH = 35, TW = 70, TH = 50;
 
-      const GAME_WIDTH = 350;
-      const GAME_HEIGHT = 500;
-      const BOTTLE_WIDTH = 25;
-      const BOTTLE_HEIGHT = 35;
-      const TRUCK_WIDTH = 70;
-      const TRUCK_HEIGHT = 50;
-
-      const generateBottle = useCallback(() => ({
-        id: bottleIdRef.current++,
-        x: Math.random() * (GAME_WIDTH - BOTTLE_WIDTH),
-        y: -BOTTLE_HEIGHT,
+      const genBottle = useCallback(() => ({
+        id: bottleId.current++,
+        x: Math.random() * (GW - BW),
+        y: -BH,
         speed: 2 + level * 0.5,
         collected: false
       }), [level]);
 
-      const generateTruck = useCallback(() => ({
-        id: truckIdRef.current++,
-        x: Math.random() * (GAME_WIDTH - TRUCK_WIDTH),
-        y: GAME_HEIGHT - TRUCK_HEIGHT - 20,
+      const genTruck = useCallback(() => ({
+        id: truckId.current++,
+        x: Math.random() * (GW - TW),
+        y: GH - TH - 20,
         capacity: 3 + Math.floor(level / 2),
         bottles: 0,
         full: false
       }), [level]);
 
-      const checkCollision = (bottle, truck) => {
-        return bottle.x < truck.x + TRUCK_WIDTH &&
-               bottle.x + BOTTLE_WIDTH > truck.x &&
-               bottle.y < truck.y + TRUCK_HEIGHT &&
-               bottle.y + BOTTLE_HEIGHT > truck.y;
-      };
+      const collide = (b, t) => (
+        b.x < t.x + TW &&
+        b.x + BW > t.x &&
+        b.y < t.y + TH &&
+        b.y + BH > t.y
+      );
 
-      const updateGame = useCallback(() => {
+      const update = useCallback(() => {
         if (gameState !== 'playing') return;
 
-        setBottles(prevBottles => {
-          const newBottles = prevBottles.map(b => ({...b, y: b.y + b.speed}))
-            .filter(b => b.y < GAME_HEIGHT + 100 && !b.collected);
-
-          setTrucks(prevTrucks => {
-            const updatedTrucks = prevTrucks.map(truck => {
-              if (truck.full) return truck;
-
-              const colliding = newBottles.find(bottle =>
-                !bottle.collected && checkCollision(bottle, truck));
-
-              if (colliding) {
-                colliding.collected = true;
-                const newCount = truck.bottles + 1;
-                const isFull = newCount >= truck.capacity;
-
-                if (isFull) {
-                  setScore(prev => prev + truck.capacity * 10);
-                }
-
-                return {...truck, bottles: newCount, full: isFull};
+        setBottles(prev => {
+          const nb = prev.map(b => ({...b, y: b.y + b.speed}))
+                         .filter(b => b.y < GH + 100 && !b.collected);
+          setTrucks(tprev => {
+            const ut = tprev.map(tr => {
+              if (tr.full) return tr;
+              const col = nb.find(b => !b.collected && collide(b, tr));
+              if (col) {
+                col.collected = true;
+                const newCnt = tr.bottles + 1;
+                const full = newCnt >= tr.capacity;
+                if (full) setScore(s => s + tr.capacity * 10);
+                return {...tr, bottles: newCnt, full};
               }
-              return truck;
+              return tr;
             });
-
-            const activeTrucks = updatedTrucks.filter(t => !t.full);
-            if (activeTrucks.length === 0) {
-              activeTrucks.push(generateTruck());
-            }
-
-            return activeTrucks;
+            const act = ut.filter(t => !t.full);
+            if (act.length === 0) act.push(genTruck());
+            return act;
           });
-
-          const fallen = newBottles.filter(b => b.y > GAME_HEIGHT && !b.collected);
-          if (fallen.length > 0) {
+          if (nb.some(b => b.y > GH && !b.collected)) {
             setExplosion(true);
             setTimeout(() => {
               setGameState('gameOver');
               setExplosion(false);
             }, 1000);
           }
-
-          return newBottles.filter(b => b.collected || b.y < GAME_HEIGHT + 50);
+          return nb.filter(b => b.collected || b.y < GH + 50);
         });
 
-        if (Math.random() < 0.05 + level * 0.01) {
-          setBottles(prev => [...prev, generateBottle()]);
+        if (Math.random() < 0.05 + level * 0.01) setBottles(p => [...p, genBottle()]);
+        setReactorHeat(h => Math.min(100, h + 0.1));
+        const nl = Math.floor(score / 200) + 1;
+        if (nl > level) {
+          setLevel(nl);
         }
-
-        setReactorHeat(prev => Math.min(100, prev + 0.1));
-
-        const newLevel = Math.floor(score / 200) + 1;
-        if (newLevel > level) {
-          setLevel(newLevel);
-          setGameSpeed(prev => Math.max(300, prev - 50));
-        }
-      }, [gameState, level, score, generateBottle, generateTruck]);
+      }, [gameState, level, score, genBottle, genTruck]);
 
       useEffect(() => {
-        if (gameState === 'playing') {
-          gameLoopRef.current = setInterval(updateGame, 50);
-        } else {
-          clearInterval(gameLoopRef.current);
-        }
-        return () => clearInterval(gameLoopRef.current);
-      }, [gameState, updateGame]);
+        if (gameState === 'playing') loopRef.current = setInterval(update, 50);
+        else clearInterval(loopRef.current);
+        return () => clearInterval(loopRef.current);
+      }, [gameState, update]);
 
-      const startGame = () => {
+      const start = () => {
         setGameState('playing');
         setScore(0);
         setLevel(1);
         setBottles([]);
-        setTrucks([generateTruck()]);
+        setTrucks([genTruck()]);
         setReactorHeat(20);
-        setGameSpeed(1000);
         setExplosion(false);
       };
 
       const backToMenu = () => {
-        if (score > highScore) {
-          setHighScore(score);
-        }
+        if (score > highScore) setHighScore(score);
         setGameState('menu');
       };
 
-      const handleTouchMove = e => {
+      const onTouchMove = e => {
         if (gameState !== 'playing') return;
         e.preventDefault();
         const touch = e.touches[0];
-        const rect = gameAreaRef.current.getBoundingClientRect();
+        const rect = gameArea.current.getBoundingClientRect();
         const x = touch.clientX - rect.left;
-
-        setTrucks(prev =>
-          prev.map(t => ({...t, x: Math.max(0, Math.min(GAME_WIDTH - TRUCK_WIDTH, x - TRUCK_WIDTH / 2))}))
-        );
+        setTrucks(ts => ts.map(t => ({
+          ...t,
+          x: Math.max(0, Math.min(GW - TW, x - TW/2))
+        })));
       };
 
-      const handleWheel = e => {
+      const onWheel = e => {
         if (gameState !== 'playing') return;
         e.preventDefault();
-        const move = e.deltaY > 0 ? 20 : -20;
-        setTrucks(prev =>
-          prev.map(t => ({...t, x: Math.max(0, Math.min(GAME_WIDTH - TRUCK_WIDTH, t.x + move))}))
-        );
+        const dir = e.deltaY > 0 ? 20 : -20;
+        setTrucks(ts => ts.map(t => ({
+          ...t,
+          x: Math.max(0, Math.min(GW - TW, t.x + dir))
+        })));
       };
 
       if (gameState === 'menu') {
         return (
-          <div style={{padding: 20}}>
-            <h1>🍺 O ALAMBIQUE NUCLEAR!!! ☢️</h1>
-            <p>Lula + Putin = Cachaça Explosiva!</p>
-            <img src="https://github.com/nelsonmidis/pages/blob/master/lula%20normal.jpg?raw=true" alt="Lula" width="60" />
-            <img src="https://github.com/nelsonmidis/pages/blob/master/putin%20melhor.jpg?raw=true" alt="Putin" width="60" />
-            <p>🏆 Recorde: {highScore}</p>
-            <button onClick={startGame}>🚀 COMEÇAR REVOLUÇÃO!</button>
+          <div className="flex flex-col items-center justify-center h-full">
+            <h1 className="text-4xl mb-4 text-yellow-300">🍺 O ALAMBIQUE NUCLEAR!!! ☢️</h1>
+            <p className="text-xl mb-6">Lula + Putin = Cachaça Explosiva!</p>
+            <div className="flex items-center space-x-4 mb-6">
+              <img src="https://github.com/nelsonmidis/pages/blob/master/lula%20normal.jpg?raw=true" alt="Lula" width="80" className="rounded-full border-4 border-green-400"/>
+              <div className="text-4xl">🤝</div>
+              <img src="https://github.com/nelsonmidis/pages/blob/master/putin%20melhor.jpg?raw=true" alt="Putin" width="80" className="rounded-full border-4 border-red-400"/>
+            </div>
+            <div className="bg-black bg-opacity-50 p-4 rounded-lg mb-6 max-w-md text-center">
+              <h2 className="text-lg mb-2">📋 Como Jogar:</h2>
+              <ul className="text-sm space-y-1">
+                <li>🍾 Lula produz cachaça no alambique</li>
+                <li>☢️ Putin fornece energia para Lula</li>
+                <li>🚛 Caminhão chinês coleta as garrafas</li>
+                <li>📱 Toque pra mover no mobile</li>
+                <li>🖱️ Use a roda do mouse no PC</li>
+                <li>💥 Não deixe garrafas caírem ou KABOOM!</li>
+              </ul>
+            </div>
+            <p className="mb-4">🏆 Recorde: <span className="font-bold">{highScore}</span></p>
+            <button onClick={start} style={{padding: '10px 20px', fontSize: '18px', background: '#e53e3e', borderRadius: '8px'}}>🚀 COMEÇAR REVOLUÇÃO!</button>
+            <p className="mt-6 text-xs opacity-70">💀 Com soldados bêbados e muito caos! 🍺<br/>Criado com ❤️ no HatchCanvas</p>
           </div>
         );
       }
 
       if (gameState === 'gameOver') {
         return (
-          <div style={{padding: 20}}>
-            <h1>💥 DESASTRE NUCLEAR! 💥</h1>
-            <p>Score: {score}</p>
-            <p>Nível: {level}</p>
-            <p>Recorde: {Math.max(score, highScore)}</p>
-            <button onClick={startGame}>🔄 TENTAR NOVAMENTE</button>
-            <button onClick={backToMenu}>🏠 MENU</button>
+          <div className="flex flex-col items-center justify-center h-full bg-gradient-to-b from-gray-900 to-red-900 text-white p-4">
+            <h1 className="text-4xl mb-4 text-red-400">☢️💥 DESASTRE NUCLEAR! 💥☢️</h1>
+            <div className="text-6xl mb-4">💀🔥💀</div>
+            <p className="text-xl mb-4">O reator de Putin explodiu!</p>
+            <div className="bg-black bg-opacity-50 p-4 rounded-lg mb-6 text-center">
+              <p>Pontuação: <strong>{score}</strong></p>
+              <p>Nível Alcançado: <strong>{level}</strong></p>
+              <p>Recorde: <strong>{Math.max(score, highScore)}</strong></p>
+            </div>
+            <div className="flex space-x-4">
+              <button onClick={start} style={{padding: '8px 16px', background: '#2f855a', borderRadius: '6px'}}>🔄 TENTAR NOVAMENTE</button>
+              <button onClick={backToMenu} style={{padding: '8px 16px', background: '#3182ce', borderRadius: '6px'}}>🏠 MENU</button>
+            </div>
+            <p className="mt-6 text-xs opacity-70">😵 "Não era para explodir, товарищ!" – Putin</p>
           </div>
         );
       }
 
-      const redIntensity = Math.min(reactorHeat / 100, 1);
-      const backgroundStyle = {
-        background: `linear-gradient(to bottom, rgb(${30 + redIntensity * 200}, ${50 - redIntensity * 40}, ${120 - redIntensity * 100}),
-                                           rgb(${20 + redIntensity * 180}, ${80 - redIntensity * 60}, ${40 - redIntensity * 30}))`,
+      const redI = Math.min(reactorHeat / 100, 1);
+      const bg = {
+        background: `linear-gradient(to bottom,
+          rgb(${30 + redI*200},${50 - redI*40},${120 - redI*100}),
+          rgb(${20 + redI*180},${80 - redI*60},${40 - redI*30}))`,
         height: '100%',
-        color: 'white'
+        overflow: 'hidden'
       };
 
       return (
-        <div style={backgroundStyle}>
-          <div>🍾 Score: {score} | 📊 Nível: {level}</div>
-          <div
-            ref={gameAreaRef}
-            onTouchMove={handleTouchMove}
-            onWheel={handleWheel}
-            style={{position: 'relative', width: GAME_WIDTH, height: GAME_HEIGHT, margin: '0 auto'}}
-          >
+        <div style={bg} onWheel={onWheel}>
+          <div className="p-2 bg-black bg-opacity-50 flex justify-between">
+            <div>🍾 Score: <strong>{score}</strong></div>
+            <div>📊 Nível: <strong>{level}</strong></div>
+          </div>
+          <div ref={gameArea} onTouchMove={onTouchMove} style={{position: 'relative', width: GW, height: GH, margin: '20px auto'}}>
             {bottles.map(b => (
-              <img
-                key={b.id}
-                src="https://github.com/nelsonmidis/pages/blob/master/cachaca.webp?raw=true"
-                alt="Cachaça"
-                style={{
-                  position: 'absolute',
-                  left: b.x,
-                  top: b.y,
-                  width: BOTTLE_WIDTH,
-                  height: BOTTLE_HEIGHT
-                }}
-              />
+              <img key={b.id} src="https://github.com/nelsonmidis/pages/blob/master/cachaca.webp?raw=true" alt="cachaca" style={{position: 'absolute', left: b.x, top: b.y, width: BW, height: BH}}/>
             ))}
             {trucks.map(t => (
-              <div key={t.id} style={{
-                position: 'absolute',
-                left: t.x,
-                top: t.y,
-                width: TRUCK_WIDTH,
-                height: TRUCK_HEIGHT
-              }}>
-                <img
-                  src="https://github.com/nelsonmidis/pages/blob/master/caminhaoChines.png?raw=true"
-                  alt="Caminhão"
-                  style={{width: '100%', height: '100%'}}
-                />
-                <div style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  right: 0,
-                  background: 'black',
-                  color: 'white',
-                  fontSize: 10,
-                  padding: '2px'
-                }}>
-                  {t.bottles}/{t.capacity}
-                </div>
+              <div key={t.id} style={{position: 'absolute', left: t.x, top: t.y, width: TW, height: TH}}>
+                <img src="https://github.com/nelsonmidis/pages/blob/master/caminhaoChines.png?raw=true" alt="truck" style={{width: '100%', height: '100%'}}/>
+                <div style={{position: 'absolute', bottom: 2, right: 2, background: 'rgba(0,0,0,0.7)', color: 'white', fontSize: 10, padding: '1px 3px'}}>{t.bottles}/{t.capacity}</div>
               </div>
             ))}
             {explosion && (
-              <div style={{
-                position: 'absolute',
-                inset: 0,
-                background: 'rgba(255,0,0,0.7)',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                fontSize: 40
-              }}>
-                💥☢️💥
-              </div>
+              <div style={{position: 'absolute', inset: 0, background: 'rgba(255,0,0,0.7)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: 48}}>💥☢️💥</div>
             )}
           </div>
+          <div className="hidden md:block text-center p-2 text-xs opacity-70">🖱️ Use a roda do mouse para mover o caminhão</div>
         </div>
       );
     };
