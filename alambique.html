@@ -1,690 +1,297 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Título da página -->
-    <title>🍺 O Alambique Nuclear!!! ☢️ - Lula + Putin = Cachaça Explosiva!</title>
-    
-    <!-- Meta tags básicas -->
-    <meta name="description" content="O jogo político-humorístico mais engraçado do Brasil! Ajude o caminhão chinês a coletar cachaça 51 do alambique nuclear antes que o reator de Putin exploda!" />
-    <meta name="keywords" content="jogo, brasil, política, humor, cachaça, alambique nuclear, lula, putin, game, diversão, nelson guimaraes" />
-    <meta name="author" content="Nelson Guimaraes" />
-    
-    <!-- Open Graph / Facebook / WhatsApp -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://seu-usuario.github.io/alambique-nuclear/" />
-    <meta property="og:title" content="🍺 O Alambique Nuclear!!! ☢️" />
-    <meta property="og:description" content="Lula + Putin = Cachaça Explosiva! O jogo mais engraçado do Brasil: colete cachaça 51 com energia nuclear!" />
-    <meta property="og:image" content="https://seu-usuario.github.io/alambique-nuclear/preview.jpg" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:locale" content="pt_BR" />
-    <meta property="og:site_name" content="O Alambique Nuclear" />
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://seu-usuario.github.io/alambique-nuclear/" />
-    <meta property="twitter:title" content="🍺 O Alambique Nuclear!!! ☢️" />
-    <meta property="twitter:description" content="Lula + Putin = Cachaça Explosiva! Jogue agora!" />
-    <meta property="twitter:image" content="https://seu-usuario.github.io/alambique-nuclear/preview.jpg" />
-    
-    <!-- Telegram / WhatsApp -->
-    <meta property="article:author" content="Nelson Guimaraes" />
-    
-    <!-- Favicon -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍺</text></svg>">
-    
-    <!-- Preload das imagens do GitHub -->
-    <link rel="preload" href="https://raw.githubusercontent.com/nelsonmidis/pages/master/lula%20normal.jpg" as="image">
-    <link rel="preload" href="https://raw.githubusercontent.com/nelsonmidis/pages/master/putin%20melhor.jpg" as="image">
-    <link rel="preload" href="https://raw.githubusercontent.com/nelsonmidis/pages/master/cachaca.webp" as="image">
-    <link rel="preload" href="https://raw.githubusercontent.com/nelsonmidis/pages/master/caminhaoChines.png" as="image">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- React e ReactDOM -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    
-    <!-- Babel para JSX -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
-    <!-- Tailwind Config -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'brown-900': '#3B2F2F',
-                    }
-                }
-            }
-        }
-    </script>
-    
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-            overflow: hidden;
-            background: #1a1a1a;
-        }
-        
-        #game-container {
-            width: 100vw;
-            height: 100vh;
-            position: relative;
-        }
-        
-        /* Prevenção de zoom em mobile */
-        * {
-            touch-action: manipulation;
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-        
-        /* Loading screen */
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: linear-gradient(45deg, #7f1d1d, #d97706);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            color: white;
-            font-weight: bold;
-        }
-        
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #ffffff33;
-            border-top: 5px solid #ffffff;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* PWA Support */
-        @media (display-mode: standalone) {
-            .pwa-mode {
-                padding-top: env(safe-area-inset-top);
-                padding-bottom: env(safe-area-inset-bottom);
-            }
-        }
-        
-        /* Landscape mobile optimization */
-        @media (orientation: landscape) and (max-height: 500px) {
-            .mobile-landscape {
-                padding: 5px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🍺 Alambique Nuclear ☢️</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body, html { width: 100%; height: 100%; font-family: sans-serif; }
+    #root { width: 100%; height: 100%; }
+    .safe-area-inset { padding-bottom: env(safe-area-inset-bottom); }
+  </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div id="loading-screen" class="loading-screen">
-        <div class="loading-spinner"></div>
-        <h2 class="text-2xl mb-2">🍺 O ALAMBIQUE NUCLEAR!!! ☢️</h2>
-        <p class="text-lg mb-4">Lula + Putin = Cachaça Explosiva!</p>
-        <p class="text-sm opacity-75">Carregando revolução nuclear...</p>
-    </div>
+  <div id="root"></div>
 
-    <!-- Game Container -->
-    <div id="game-container" style="display: none;"></div>
+  <script type="text/babel">
 
-    <script type="text/babel">
-        const { useState, useEffect, useCallback, useRef } = React;
+    const { useState, useEffect, useCallback, useRef } = React;
 
-        // Mock do hook useStoredState para funcionar independente
-        const useStoredState = (key, initialValue) => {
-            const [value, setValue] = useState(() => {
-                try {
-                    const item = window.localStorage.getItem(key);
-                    return item ? JSON.parse(item) : initialValue;
-                } catch (error) {
-                    console.error('Erro localStorage:', error);
-                    return initialValue;
+    const useStoredState = (key, initialValue) => {
+      const [value, setValue] = useState(() => {
+        const stored = localStorage.getItem(key);
+        return stored ? JSON.parse(stored) : initialValue;
+      });
+
+      useEffect(() => {
+        localStorage.setItem(key, JSON.stringify(value));
+      }, [key, value]);
+
+      return [value, setValue];
+    };
+
+    const AlambicGame = () => {
+      const [gameState, setGameState] = useState('menu');
+      const [score, setScore] = useState(0);
+      const [highScore, setHighScore] = useStoredState('alambique-highscore', 0);
+      const [level, setLevel] = useState(1);
+      const [bottles, setBottles] = useState([]);
+      const [trucks, setTrucks] = useState([]);
+      const [reactorHeat, setReactorHeat] = useState(20);
+      const [gameSpeed, setGameSpeed] = useState(1000);
+      const [explosion, setExplosion] = useState(false);
+
+      const gameAreaRef = useRef(null);
+      const gameLoopRef = useRef(null);
+      const bottleIdRef = useRef(0);
+      const truckIdRef = useRef(0);
+
+      const GAME_WIDTH = 350;
+      const GAME_HEIGHT = 500;
+      const BOTTLE_WIDTH = 25;
+      const BOTTLE_HEIGHT = 35;
+      const TRUCK_WIDTH = 70;
+      const TRUCK_HEIGHT = 50;
+
+      const generateBottle = useCallback(() => ({
+        id: bottleIdRef.current++,
+        x: Math.random() * (GAME_WIDTH - BOTTLE_WIDTH),
+        y: -BOTTLE_HEIGHT,
+        speed: 2 + level * 0.5,
+        collected: false
+      }), [level]);
+
+      const generateTruck = useCallback(() => ({
+        id: truckIdRef.current++,
+        x: Math.random() * (GAME_WIDTH - TRUCK_WIDTH),
+        y: GAME_HEIGHT - TRUCK_HEIGHT - 20,
+        capacity: 3 + Math.floor(level / 2),
+        bottles: 0,
+        full: false
+      }), [level]);
+
+      const checkCollision = (bottle, truck) => {
+        return bottle.x < truck.x + TRUCK_WIDTH &&
+               bottle.x + BOTTLE_WIDTH > truck.x &&
+               bottle.y < truck.y + TRUCK_HEIGHT &&
+               bottle.y + BOTTLE_HEIGHT > truck.y;
+      };
+
+      const updateGame = useCallback(() => {
+        if (gameState !== 'playing') return;
+
+        setBottles(prevBottles => {
+          const newBottles = prevBottles.map(b => ({...b, y: b.y + b.speed}))
+            .filter(b => b.y < GAME_HEIGHT + 100 && !b.collected);
+
+          setTrucks(prevTrucks => {
+            const updatedTrucks = prevTrucks.map(truck => {
+              if (truck.full) return truck;
+
+              const colliding = newBottles.find(bottle =>
+                !bottle.collected && checkCollision(bottle, truck));
+
+              if (colliding) {
+                colliding.collected = true;
+                const newCount = truck.bottles + 1;
+                const isFull = newCount >= truck.capacity;
+
+                if (isFull) {
+                  setScore(prev => prev + truck.capacity * 10);
                 }
+
+                return {...truck, bottles: newCount, full: isFull};
+              }
+              return truck;
             });
 
-            const setStoredValue = useCallback((newValue) => {
-                try {
-                    setValue(newValue);
-                    window.localStorage.setItem(key, JSON.stringify(newValue));
-                } catch (error) {
-                    console.error('Erro ao salvar localStorage:', error);
-                }
-            }, [key]);
-
-            return [value, setStoredValue];
-        };
-
-        // Simulação do objeto hatch
-        const hatch = {
-            useStoredState
-        };
-
-        const AlambicGame = () => {
-            // Estados do jogo
-            const [gameState, setGameState] = useState('menu');
-            const [score, setScore] = useState(0);
-            const [highScore, setHighScore] = useStoredState('alambique-highscore', 0);
-            const [level, setLevel] = useState(1);
-            const [bottles, setBottles] = useState([]);
-            const [trucks, setTrucks] = useState([]);
-            const [reactorHeat, setReactorHeat] = useState(20);
-            const [gameSpeed, setGameSpeed] = useState(1000);
-            const [explosion, setExplosion] = useState(false);
-            
-            const gameAreaRef = useRef(null);
-            const gameLoopRef = useRef(null);
-            const bottleIdRef = useRef(0);
-            const truckIdRef = useRef(0);
-
-            // Constantes do jogo - adaptadas para mobile
-            const GAME_WIDTH = 350;
-            const GAME_HEIGHT = 500;
-            const BOTTLE_WIDTH = 25;
-            const BOTTLE_HEIGHT = 35;
-            const TRUCK_WIDTH = 70;
-            const TRUCK_HEIGHT = 50;
-
-            // URLs das imagens diretas do GitHub (RAW)
-            const IMAGES = {
-                lula: 'https://raw.githubusercontent.com/nelsonmidis/pages/master/lula%20normal.jpg',
-                putin: 'https://raw.githubusercontent.com/nelsonmidis/pages/master/putin%20melhor.jpg',
-                cachaca: 'https://raw.githubusercontent.com/nelsonmidis/pages/master/cachaca.webp',
-                caminhao: 'https://raw.githubusercontent.com/nelsonmidis/pages/master/caminhaoChines.png'
-            };
-
-            // Função para gerar posição aleatória para garrafas
-            const generateBottle = useCallback(() => {
-                return {
-                    id: bottleIdRef.current++,
-                    x: Math.random() * (GAME_WIDTH - BOTTLE_WIDTH),
-                    y: -BOTTLE_HEIGHT,
-                    speed: 2 + level * 0.5,
-                    collected: false
-                };
-            }, [level]);
-
-            // Função para gerar caminhões
-            const generateTruck = useCallback(() => {
-                return {
-                    id: truckIdRef.current++,
-                    x: Math.random() * (GAME_WIDTH - TRUCK_WIDTH),
-                    y: GAME_HEIGHT - TRUCK_HEIGHT - 20,
-                    capacity: 3 + Math.floor(level / 2),
-                    bottles: 0,
-                    full: false
-                };
-            }, [level]);
-
-            // Detectar colisão
-            const checkCollision = (bottle, truck) => {
-                return bottle.x < truck.x + TRUCK_WIDTH &&
-                       bottle.x + BOTTLE_WIDTH > truck.x &&
-                       bottle.y < truck.y + TRUCK_HEIGHT &&
-                       bottle.y + BOTTLE_HEIGHT > truck.y;
-            };
-
-            // Atualizar jogo
-            const updateGame = useCallback(() => {
-                if (gameState !== 'playing') return;
-
-                setBottles(prevBottles => {
-                    const newBottles = prevBottles.map(bottle => ({
-                        ...bottle,
-                        y: bottle.y + bottle.speed
-                    })).filter(bottle => bottle.y < GAME_HEIGHT + 100 && !bottle.collected);
-
-                    // Verificar colisões
-                    setTrucks(prevTrucks => {
-                        const updatedTrucks = prevTrucks.map(truck => {
-                            if (truck.full) return truck;
-                            
-                            const collidingBottle = newBottles.find(bottle => 
-                                !bottle.collected && checkCollision(bottle, truck)
-                            );
-                            
-                            if (collidingBottle) {
-                                collidingBottle.collected = true;
-                                const newBottleCount = truck.bottles + 1;
-                                const isFull = newBottleCount >= truck.capacity;
-                                
-                                if (isFull) {
-                                    setScore(prev => prev + truck.capacity * 10);
-                                }
-                                
-                                return {
-                                    ...truck,
-                                    bottles: newBottleCount,
-                                    full: isFull
-                                };
-                            }
-                            return truck;
-                        });
-
-                        // Remover caminhões cheios
-                        const activeTrucks = updatedTrucks.filter(truck => !truck.full);
-                        
-                        // Adicionar novo caminhão se necessário
-                        if (activeTrucks.length === 0) {
-                            activeTrucks.push(generateTruck());
-                        }
-                        
-                        return activeTrucks;
-                    });
-
-                    // Verificar garrafas que caíram (game over)
-                    const fallenBottles = newBottles.filter(bottle =>
-                        bottle.y > GAME_HEIGHT && !bottle.collected
-                    );
-                    
-                    if (fallenBottles.length > 0) {
-                        setExplosion(true);
-                        setTimeout(() => {
-                            setGameState('gameOver');
-                            setExplosion(false);
-                        }, 1000);
-                    }
-
-                    return newBottles.filter(bottle => bottle.collected || bottle.y < GAME_HEIGHT + 50);
-                });
-
-                // Adicionar novas garrafas
-                if (Math.random() < 0.05 + level * 0.01) {
-                    setBottles(prev => [...prev, generateBottle()]);
-                }
-
-                // Aumentar heat do reator
-                setReactorHeat(prev => Math.min(100, prev + 0.1));
-
-                // Aumentar nível baseado no score
-                const newLevel = Math.floor(score / 200) + 1;
-                if (newLevel > level) {
-                    setLevel(newLevel);
-                    setGameSpeed(prev => Math.max(300, prev - 50));
-                }
-            }, [gameState, level, score, generateBottle, generateTruck]);
-
-            // Game loop
-            useEffect(() => {
-                if (gameState === 'playing') {
-                    gameLoopRef.current = setInterval(updateGame, 50);
-                } else {
-                    clearInterval(gameLoopRef.current);
-                }
-
-                return () => clearInterval(gameLoopRef.current);
-            }, [gameState, updateGame]);
-
-            // Iniciar jogo
-            const startGame = () => {
-                setGameState('playing');
-                setScore(0);
-                setLevel(1);
-                setBottles([]);
-                setTrucks([generateTruck()]);
-                setReactorHeat(20);
-                setGameSpeed(1000);
-                setExplosion(false);
-            };
-
-            // Voltar ao menu
-            const backToMenu = () => {
-                if (score > highScore) {
-                    setHighScore(score);
-                }
-                setGameState('menu');
-            };
-
-            // Controles touch para mobile
-            const handleTouchMove = (e) => {
-                if (gameState !== 'playing') return;
-                e.preventDefault();
-                
-                const touch = e.touches[0];
-                const rect = gameAreaRef.current.getBoundingClientRect();
-                const x = touch.clientX - rect.left;
-                
-                setTrucks(prevTrucks => {
-                    if (prevTrucks.length === 0) return prevTrucks;
-                    
-                    return prevTrucks.map(truck => ({
-                        ...truck, 
-                        x: Math.max(0, Math.min(GAME_WIDTH - TRUCK_WIDTH, x - TRUCK_WIDTH/2))
-                    }));
-                });
-            };
-
-            // Controles com roda do mouse para PC
-            const handleWheel = (e) => {
-                if (gameState !== 'playing') return;
-                e.preventDefault();
-                
-                const moveDistance = 20;
-                const direction = e.deltaY > 0 ? 1 : -1;
-                
-                setTrucks(prevTrucks => {
-                    if (prevTrucks.length === 0) return prevTrucks;
-                    
-                    return prevTrucks.map(truck => ({
-                        ...truck,
-                        x: Math.max(0, Math.min(GAME_WIDTH - TRUCK_WIDTH, truck.x + (direction * moveDistance)))
-                    }));
-                });
-            };
-
-            if (gameState === 'menu') {
-                return (
-                    <div className="flex flex-col items-center justify-center h-full bg-gradient-to-b from-red-900 to-yellow-800 text-white p-4 pt-8 pb-12">
-                        <div className="text-center mb-6">
-                            <h1 className="text-3xl md:text-4xl font-bold mb-2 text-yellow-300">🍺 O ALAMBIQUE NUCLEAR!!! ☢️</h1>
-                            <p className="text-base md:text-lg mb-4">Lula + Putin = Cachaça Explosiva!</p>
-                            <div className="flex items-center justify-center space-x-4 mb-4">
-                                <div className="w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden border-4 border-green-400">
-                                    <img src={IMAGES.lula} alt="Lula" className="w-full h-full object-cover" />
-                                </div>
-                                <div className="text-2xl md:text-4xl">🤝</div>
-                                <div className="w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden border-4 border-red-400">
-                                    <img src={IMAGES.putin} alt="Putin" className="w-full h-full object-cover" />
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div className="bg-black bg-opacity-50 p-4 md:p-6 rounded-lg mb-6 max-w-sm md:max-w-md mx-2">
-                            <h2 className="text-lg md:text-xl font-bold mb-3 text-center">📋 Como Jogar:</h2>
-                            <ul className="text-xs md:text-sm space-y-2">
-                                <li>🍾 Lula produz cachaça no alambique</li>
-                                <li>☢️ Putin fornece energia para Lula</li>
-                                <li>🚛 Caminhão chinês coleta as garrafas</li>
-                                <li>📱 Mobile: Toque na tela para mover</li>
-                                <li>🖱️ PC: Use a roda do mouse para mover</li>
-                                <li>💥 Não deixe garrafas caírem ou KABOOM!</li>
-                            </ul>
-                        </div>
-
-                        <div className="text-center mb-6">
-                            <p className="text-base md:text-lg">🏆 Recorde: {highScore}</p>
-                        </div>
-
-                        <button
-                            onClick={startGame}
-                            className="bg-red-600 hover:bg-red-700 px-6 py-3 md:px-8 md:py-4 rounded-lg text-lg md:text-xl font-bold transition-colors"
-                        >
-                            🚀 COMEÇAR REVOLUÇÃO!
-                        </button>
-
-                        <div className="mt-6 text-center text-xs md:text-sm opacity-75">
-                            <p>💀 Com soldados bêbados e muito caos! 🍺</p>
-                            <p className="mt-2">Criado com ❤️ por Nelson Guimaraes</p>
-                        </div>
-                    </div>
-                );
+            const activeTrucks = updatedTrucks.filter(t => !t.full);
+            if (activeTrucks.length === 0) {
+              activeTrucks.push(generateTruck());
             }
 
-            if (gameState === 'gameOver') {
-                return (
-                    <div className="flex flex-col items-center justify-center h-full bg-gradient-to-b from-gray-900 to-red-900 text-white p-4 pt-8 pb-12">
-                        <div className="text-center mb-6">
-                            <h1 className="text-3xl md:text-4xl font-bold mb-4 text-red-400">☢️💥 DESASTRE NUCLEAR! 💥☢️</h1>
-                            <div className="text-4xl md:text-6xl mb-4">💀🔥💀</div>
-                            <p className="text-lg md:text-xl mb-4">O reator de Putin explodiu!</p>
-                            <p className="text-sm md:text-lg mb-2">Soldados bêbados por toda parte... 🍺💀</p>
-                        </div>
+            return activeTrucks;
+          });
 
-                        <div className="bg-black bg-opacity-50 p-4 md:p-6 rounded-lg mb-6 mx-2">
-                            <h2 className="text-xl md:text-2xl font-bold mb-4 text-center">📊 Resultado:</h2>
-                            <div className="text-center space-y-2">
-                                <p className="text-lg md:text-xl">Pontuação: <span className="text-yellow-400 font-bold">{score}</span></p>
-                                <p className="text-base md:text-lg">Nível Alcançado: <span className="text-green-400 font-bold">{level}</span></p>
-                                <p className="text-base md:text-lg">Recorde: <span className="text-purple-400 font-bold">{Math.max(score, highScore)}</span></p>
-                            </div>
-                        </div>
-
-                        <div className="flex space-x-4">
-                            <button
-                                onClick={startGame}
-                                className="bg-green-600 hover:bg-green-700 px-4 py-2 md:px-6 md:py-3 rounded-lg font-bold transition-colors text-sm md:text-base"
-                            >
-                                🔄 TENTAR NOVAMENTE
-                            </button>
-                            <button
-                                onClick={backToMenu}
-                                className="bg-blue-600 hover:bg-blue-700 px-4 py-2 md:px-6 md:py-3 rounded-lg font-bold transition-colors text-sm md:text-base"
-                            >
-                                🏠 MENU
-                            </button>
-                        </div>
-
-                        <div className="mt-6 text-center text-xs md:text-sm opacity-75">
-                            <p>😵 "Não era para explodir, товарищ!" - Putin</p>
-                        </div>
-                    </div>
-                );
-            }
-
-            // Jogo em andamento
-            const redIntensity = Math.min(reactorHeat / 100, 1);
-            const backgroundStyle = {
-                background: `linear-gradient(to bottom, 
-                    rgb(${Math.floor(30 + redIntensity * 200)}, ${Math.floor(50 - redIntensity * 40)}, ${Math.floor(120 - redIntensity * 100)}), 
-                    rgb(${Math.floor(20 + redIntensity * 180)}, ${Math.floor(80 - redIntensity * 60)}, ${Math.floor(40 - redIntensity * 30)}))`
-            };
-
-            return (
-                <div className="h-full text-white overflow-hidden flex flex-col" style={backgroundStyle}>
-                    {/* HUD com margens seguras */}
-                    <div className="flex justify-center items-center p-2 bg-black bg-opacity-50 flex-shrink-0">
-                        <div className="flex items-center space-x-4 text-sm">
-                            <div>🍾 Score: <span className="font-bold text-yellow-400">{score}</span></div>
-                            <div>📊 Nível: <span className="font-bold text-green-400">{level}</span></div>
-                        </div>
-                    </div>
-
-                    {/* Container principal com margens seguras para mobile */}
-                    <div className="flex-1 flex items-center justify-center p-4 pb-8 pt-2">
-                        {/* Área do jogo com tamanho adaptativo */}
-                        <div className="relative" style={{ width: GAME_WIDTH, height: GAME_HEIGHT }}>
-                            {/* Fundo com elementos decorativos */}
-                            <div className="absolute inset-0 bg-gradient-to-b from-gray-800 to-yellow-900 rounded-lg">
-                                {/* Lula */}
-                                <div className="absolute top-3 left-3 w-10 h-10 rounded-full overflow-hidden border-2 border-green-400 select-none pointer-events-none">
-                                    <img src={IMAGES.lula} alt="Lula" className="w-full h-full object-cover" />
-                                </div>
-                                <div className="absolute top-14 left-3 text-xs text-green-400 font-bold select-none pointer-events-none">Lula</div>
-                                
-                                {/* Putin */}
-                                <div className="absolute top-3 right-3 w-10 h-10 rounded-full overflow-hidden border-2 border-red-400 select-none pointer-events-none">
-                                    <img src={IMAGES.putin} alt="Putin" className="w-full h-full object-cover" />
-                                </div>
-                                <div className="absolute top-14 right-3 text-xs text-red-400 font-bold select-none pointer-events-none">Putin</div>
-                                
-                                <div className="absolute top-16 left-1/2 transform -translate-x-1/2 text-xs select-none pointer-events-none">⚗️ Alambique Nuclear</div>
-                                
-                                {/* Indicador de potência do reator no centro */}
-                                <div className="absolute top-20 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-75 p-2 rounded-lg select-none pointer-events-none">
-                                    <div className="text-xs text-white mb-1 text-center">☢️ Reator Putin</div>
-                                    <div className="w-20 h-2 bg-gray-700 rounded">
-                                        <div 
-                                            className="h-full bg-gradient-to-r from-yellow-400 to-red-600 rounded transition-all"
-                                            style={{ width: `${reactorHeat}%` }}
-                                        />
-                                    </div>
-                                    <div className="text-xs text-white text-center mt-1">{Math.round(reactorHeat)}%</div>
-                                </div>
-                                <div className="absolute bottom-16 left-2 select-none pointer-events-none">💀</div>
-                                <div className="absolute bottom-16 right-2 select-none pointer-events-none">🍺💀</div>
-                            </div>
-
-                            {/* Garrafas */}
-                            {bottles.map(bottle => (
-                                <div
-                                    key={bottle.id}
-                                    className="absolute flex items-center justify-center select-none pointer-events-none"
-                                    style={{
-                                        left: bottle.x,
-                                        top: bottle.y,
-                                        width: BOTTLE_WIDTH,
-                                        height: BOTTLE_HEIGHT,
-                                    }}
-                                >
-                                    <img 
-                                        src={IMAGES.cachaca} 
-                                        alt="Cachaça 51" 
-                                        className="w-full h-full object-contain select-none"
-                                    />
-                                </div>
-                            ))}
-
-                            {/* Caminhões */}
-                            {trucks.map(truck => (
-                                <div
-                                    key={truck.id}
-                                    className="absolute select-none pointer-events-none"
-                                    style={{
-                                        left: truck.x,
-                                        top: truck.y,
-                                        width: TRUCK_WIDTH,
-                                        height: TRUCK_HEIGHT,
-                                    }}
-                                >
-                                    <div className="relative w-full h-full">
-                                        <img 
-                                            src={IMAGES.caminhao} 
-                                            alt="Caminhão" 
-                                            className="w-full h-full object-contain select-none"
-                                        />
-                                        
-                                        {/* Contador de garrafas */}
-                                        <div className="absolute bottom-1 right-1 bg-black bg-opacity-75 text-white text-xs px-1 rounded select-none">
-                                            {truck.bottles}/{truck.capacity}
-                                        </div>
-                                        
-                                        {/* Indicador de movimento (rodinhas) */}
-                                        <div className="absolute bottom-0 left-2 w-2 h-2 bg-gray-800 rounded-full select-none"></div>
-                                        <div className="absolute bottom-0 right-6 w-2 h-2 bg-gray-800 rounded-full select-none"></div>
-                                        <div className="absolute bottom-0 right-2 w-2 h-2 bg-gray-800 rounded-full select-none"></div>
-                                    </div>
-                                </div>
-                            ))}
-
-                            {/* Área de controle para mobile e PC */}
-                            <div
-                                ref={gameAreaRef}
-                                className="absolute inset-0 touch-none select-none"
-                                onTouchMove={handleTouchMove}
-                                onTouchStart={(e) => e.preventDefault()}
-                                onWheel={handleWheel}
-                            />
-
-                            {/* Explosão */}
-                            {explosion && (
-                                <div className="absolute inset-0 bg-red-600 opacity-75 flex items-center justify-center text-4xl md:text-6xl animate-pulse rounded-lg">
-                                    💥☢️💥
-                                </div>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* Controles para PC */}
-                    <div className="hidden md:block text-center p-2 text-xs opacity-75 flex-shrink-0">
-                        <p>🖱️ Use a roda do mouse para mover o caminhão (↑↓)</p>
-                    </div>
-                </div>
-            );
-        };
-
-        // Função para esconder loading e mostrar jogo
-        const hideLoading = () => {
-            document.getElementById('loading-screen').style.display = 'none';
-            document.getElementById('game-container').style.display = 'block';
-        };
-
-        // Preload das imagens e inicialização
-        const preloadImages = () => {
-            const images = [
-                'https://raw.githubusercontent.com/nelsonmidis/pages/master/lula%20normal.jpg',
-                'https://raw.githubusercontent.com/nelsonmidis/pages/master/putin%20melhor.jpg',
-                'https://raw.githubusercontent.com/nelsonmidis/pages/master/cachaca.webp',
-                'https://raw.githubusercontent.com/nelsonmidis/pages/master/caminhaoChines.png'
-            ];
-
-            let loadedImages = 0;
-            const totalImages = images.length;
-
-            images.forEach(src => {
-                const img = new Image();
-                img.onload = () => {
-                    loadedImages++;
-                    if (loadedImages === totalImages) {
-                        setTimeout(hideLoading, 500);
-                    }
-                };
-                img.onerror = () => {
-                    console.log('Erro ao carregar imagem:', src);
-                    loadedImages++;
-                    if (loadedImages === totalImages) {
-                        setTimeout(hideLoading, 500);
-                    }
-                };
-                img.src = src;
-            });
-
-            // Timeout de segurança caso as imagens demorem muito
+          const fallen = newBottles.filter(b => b.y > GAME_HEIGHT && !b.collected);
+          if (fallen.length > 0) {
+            setExplosion(true);
             setTimeout(() => {
-                if (loadedImages < totalImages) {
-                    console.log('Timeout: carregando jogo mesmo sem todas as imagens');
-                    hideLoading();
-                }
-            }, 5000);
-        };
+              setGameState('gameOver');
+              setExplosion(false);
+            }, 1000);
+          }
 
-        // Renderizar o jogo após carregamento
-        document.addEventListener('DOMContentLoaded', () => {
-            preloadImages();
-            ReactDOM.render(React.createElement(AlambicGame), document.getElementById('game-container'));
+          return newBottles.filter(b => b.collected || b.y < GAME_HEIGHT + 50);
         });
 
-        // PWA Support
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(() => console.log('SW registered'))
-                    .catch(() => console.log('SW registration failed'));
-            });
+        if (Math.random() < 0.05 + level * 0.01) {
+          setBottles(prev => [...prev, generateBottle()]);
         }
-    </script>
 
-    <!-- Google Analytics (opcional) -->
-    <!-- 
-    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'GA_MEASUREMENT_ID');
-    </script>
-    -->
+        setReactorHeat(prev => Math.min(100, prev + 0.1));
+
+        const newLevel = Math.floor(score / 200) + 1;
+        if (newLevel > level) {
+          setLevel(newLevel);
+          setGameSpeed(prev => Math.max(300, prev - 50));
+        }
+      }, [gameState, level, score, generateBottle, generateTruck]);
+
+      useEffect(() => {
+        if (gameState === 'playing') {
+          gameLoopRef.current = setInterval(updateGame, 50);
+        } else {
+          clearInterval(gameLoopRef.current);
+        }
+        return () => clearInterval(gameLoopRef.current);
+      }, [gameState, updateGame]);
+
+      const startGame = () => {
+        setGameState('playing');
+        setScore(0);
+        setLevel(1);
+        setBottles([]);
+        setTrucks([generateTruck()]);
+        setReactorHeat(20);
+        setGameSpeed(1000);
+        setExplosion(false);
+      };
+
+      const backToMenu = () => {
+        if (score > highScore) {
+          setHighScore(score);
+        }
+        setGameState('menu');
+      };
+
+      const handleTouchMove = e => {
+        if (gameState !== 'playing') return;
+        e.preventDefault();
+        const touch = e.touches[0];
+        const rect = gameAreaRef.current.getBoundingClientRect();
+        const x = touch.clientX - rect.left;
+
+        setTrucks(prev =>
+          prev.map(t => ({...t, x: Math.max(0, Math.min(GAME_WIDTH - TRUCK_WIDTH, x - TRUCK_WIDTH / 2))}))
+        );
+      };
+
+      const handleWheel = e => {
+        if (gameState !== 'playing') return;
+        e.preventDefault();
+        const move = e.deltaY > 0 ? 20 : -20;
+        setTrucks(prev =>
+          prev.map(t => ({...t, x: Math.max(0, Math.min(GAME_WIDTH - TRUCK_WIDTH, t.x + move))}))
+        );
+      };
+
+      if (gameState === 'menu') {
+        return (
+          <div style={{padding: 20}}>
+            <h1>🍺 O ALAMBIQUE NUCLEAR!!! ☢️</h1>
+            <p>Lula + Putin = Cachaça Explosiva!</p>
+            <img src="https://github.com/nelsonmidis/pages/blob/master/lula%20normal.jpg?raw=true" alt="Lula" width="60" />
+            <img src="https://github.com/nelsonmidis/pages/blob/master/putin%20melhor.jpg?raw=true" alt="Putin" width="60" />
+            <p>🏆 Recorde: {highScore}</p>
+            <button onClick={startGame}>🚀 COMEÇAR REVOLUÇÃO!</button>
+          </div>
+        );
+      }
+
+      if (gameState === 'gameOver') {
+        return (
+          <div style={{padding: 20}}>
+            <h1>💥 DESASTRE NUCLEAR! 💥</h1>
+            <p>Score: {score}</p>
+            <p>Nível: {level}</p>
+            <p>Recorde: {Math.max(score, highScore)}</p>
+            <button onClick={startGame}>🔄 TENTAR NOVAMENTE</button>
+            <button onClick={backToMenu}>🏠 MENU</button>
+          </div>
+        );
+      }
+
+      const redIntensity = Math.min(reactorHeat / 100, 1);
+      const backgroundStyle = {
+        background: `linear-gradient(to bottom, rgb(${30 + redIntensity * 200}, ${50 - redIntensity * 40}, ${120 - redIntensity * 100}),
+                                           rgb(${20 + redIntensity * 180}, ${80 - redIntensity * 60}, ${40 - redIntensity * 30}))`,
+        height: '100%',
+        color: 'white'
+      };
+
+      return (
+        <div style={backgroundStyle}>
+          <div>🍾 Score: {score} | 📊 Nível: {level}</div>
+          <div
+            ref={gameAreaRef}
+            onTouchMove={handleTouchMove}
+            onWheel={handleWheel}
+            style={{position: 'relative', width: GAME_WIDTH, height: GAME_HEIGHT, margin: '0 auto'}}
+          >
+            {bottles.map(b => (
+              <img
+                key={b.id}
+                src="https://github.com/nelsonmidis/pages/blob/master/cachaca.webp?raw=true"
+                alt="Cachaça"
+                style={{
+                  position: 'absolute',
+                  left: b.x,
+                  top: b.y,
+                  width: BOTTLE_WIDTH,
+                  height: BOTTLE_HEIGHT
+                }}
+              />
+            ))}
+            {trucks.map(t => (
+              <div key={t.id} style={{
+                position: 'absolute',
+                left: t.x,
+                top: t.y,
+                width: TRUCK_WIDTH,
+                height: TRUCK_HEIGHT
+              }}>
+                <img
+                  src="https://github.com/nelsonmidis/pages/blob/master/caminhaoChines.png?raw=true"
+                  alt="Caminhão"
+                  style={{width: '100%', height: '100%'}}
+                />
+                <div style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  right: 0,
+                  background: 'black',
+                  color: 'white',
+                  fontSize: 10,
+                  padding: '2px'
+                }}>
+                  {t.bottles}/{t.capacity}
+                </div>
+              </div>
+            ))}
+            {explosion && (
+              <div style={{
+                position: 'absolute',
+                inset: 0,
+                background: 'rgba(255,0,0,0.7)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                fontSize: 40
+              }}>
+                💥☢️💥
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    };
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<AlambicGame />);
+  </script>
 </body>
 </html>
